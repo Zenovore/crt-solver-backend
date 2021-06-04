@@ -18,7 +18,8 @@ app.post('/',express.json({type:'*/*'}), (req,res)=> {
 
   // console.log(JSON.parse(req.body))
   let a = getFinalAnswer(req.body)
-  res.send(`${a}`)
+  // res.send(`${a}`)
+  res.send(JSON.stringify(a))
 });
 
 function mapping(list){
@@ -32,7 +33,7 @@ function mapping(list){
 function simplifier(list){
   for (let j = 0; j<list.length;j++){
     if (list[j][0] != 1){
-      for (let i = 0; i<99999999;i++){
+      for (let i = 0; i<9999;i++){
         let number = (list[j][2]*i + list[j][1])/list[j][0]
         if (number % 1 == 0){
           list[j][0] = 1
@@ -82,7 +83,7 @@ function getConstant(a){
 function getY(listM,listModulo){
   let result = []
   for (let i =0; i<listM.length;i++){
-    for (let j =0; i<999999;j++){
+    for (let j =0; j<9999;j++){
       if (j*listM[i] % listModulo[i] === 1){
         result.push(j)
         break
@@ -97,7 +98,7 @@ function getAnswer(listY,listM,listConstant,m){
   for (let i =0; i<listY.length;i++){
     result += listY[i] * listM[i] * listConstant[i]
   }
-  return result % m
+  return result
 }
 
 function getm(listModulo){
@@ -109,21 +110,26 @@ function getm(listModulo){
 }
 
 function getFinalAnswer(a){
+  let result = []
   a = mapping(a)
-  console.log(a)
   a = simplifier(a)
   listModulo = getModulo(a)
   listConstant = getConstant(a)
   listM = getM(listModulo)
   listY = getY(listM,listModulo)
+  if (listY.length == 0){
+    return result
+  }
   let m = getm(listModulo)
-  console.log(a)
-  console.log(listModulo)
-  console.log(listM)
-  console.log(listConstant)
-  console.log(listY)
-  console.log(getAnswer(listY,listM,listConstant,m))
-  return getAnswer(listY,listM,listConstant,m)
+  result.push(a)
+  result.push(listM)
+  result.push(listY)
+  result.push(listModulo)
+  result.push(listConstant)
+  result.push(m)
+  result.push(getAnswer(listY,listM,listConstant,m))
+  console.log(result)
+  return result
 }
 
 
