@@ -4,21 +4,12 @@ const express = require('express');
 const app = express();
 
 app.post('/',express.json({type:'*/*'}), (req,res)=> {
-  // let keys = Object.keys(req.body);
-  // console.log(req.body[keys[0]]);
-  res.set({
-    'Access-Control-Allow-Headers': 'accept',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST'
-  })
-  
-  // res.set()
-  // console.log(req.body)
-  
-
-  // console.log(JSON.parse(req.body))
+  // res.set({
+  //   'Access-Control-Allow-Headers': 'accept',
+  //   'Access-Control-Allow-Origin': '*',
+  //   'Access-Control-Allow-Methods': 'POST'
+  // })
   let a = getFinalAnswer(req.body)
-  // res.send(`${a}`)
   res.send(JSON.stringify(a))
 });
 
